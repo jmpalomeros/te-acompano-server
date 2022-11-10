@@ -46,7 +46,7 @@ router.post("/signup", async (req, res, next) => {
     // encriptar contraseña
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
-
+    
     let newUser = {
       firstName: firstName,
       lastName: lastName,

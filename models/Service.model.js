@@ -6,23 +6,23 @@ const serviceSchema = new Schema( {
     title: String,
     typeService: {
         type: String,
-        enum: ["Ocio", "Ayuda", "Compañía"],
+        enum: ["Ocio", "Ayuda"],
         default: "Ayuda",
         required: true,
     },
     description: String,
     city: String,
     isAceppted: Boolean,
-    offeredServices: [
-    { type: mongoose.Schema.Types.ObjectId,
+    offeredServices:{ 
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         }, 
-    ],
-    acceptedServices: [
-        { type: mongoose.Schema.Types.ObjectId,
+    
+    acceptedServices: { 
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        }, 
-    ]
+        }
+    
 })
 
 
