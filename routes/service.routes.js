@@ -42,7 +42,12 @@ router.post("/", async (req, res, next) => {
   };
 
   try {
-    const response = await Service.create(newService, offeredServices.id, acceptedServices);
+    const response = await Service.create(newService, offeredServices.id)
+   
+    // .populate("offeredServices")
+    // .populate("acceptedServices")
+    console.log(response)
+    
     res.status(201).json("El servicio se ha creado correctamente");
   } catch (error) {
     next(error);
