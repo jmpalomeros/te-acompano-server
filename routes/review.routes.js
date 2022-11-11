@@ -3,8 +3,12 @@ const isAuthenticated = require("../middlewares/auth.middlewares");
 const Review = require("../models/Review.model");
 const Service = require("../models/Review.model");
 
+
 // GET "/api/review" => enviar todas las review (READ)
 router.get("/", isAuthenticated, async (req, res, next) => {
+
+  const { reviewId } = req.params
+
   try {
     const response = await Review.find()
       .populate("reviewAuthor")
@@ -19,7 +23,7 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 
 // POST "/api/review/:serviceId" => recibe detalles de la review y la crea en la BD (CREATE)
 router.post("/:serviceId", isAuthenticated, async (req, res, next) => {
-  console.log(req.body);
+  console.log("BODY",req.body);
 
   const { reviewAuthor, reviewedService, ratedVolunteer, review, rating } =
     req.body;
@@ -27,18 +31,17 @@ router.post("/:serviceId", isAuthenticated, async (req, res, next) => {
   const { serviceId } = req.params;
 
   try {
-    const volunteerId = await Service.findById(serviceId).select(
-      "offeredServices"
-    );
+    const volunteerId = await Service.findById(serviceId)
+    //.select("offeredServices");
 
     const newReview = {
       reviewAuthor: req.payload._id,
       reviewedService: serviceId,
-      ratedVolunteer: volunteerId,
+      ratedVolunteer: volunteerId, //!NOS DEVUELVE NULL PQ NO LLEGA EL ID
       review,
       rating,
     };
-
+    console.log("VOLUNTEER",volunteerId)
     const response = await Review.create(newReview);
     console.log(response);
     res.status(200).json("La review se ha creado correctamente");
