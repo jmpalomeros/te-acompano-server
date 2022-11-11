@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const Service = require("../models/Service.model");
-const User = require("../models/User.model")
 const isAuthenticated = require("../middlewares/auth.middlewares");
 
 //GET "/api/service"=> envia todos los servicios registrados en la DB
@@ -91,9 +90,9 @@ router.patch("/:serviceId", isAuthenticated,async(req,res,next)=>{
     }
 })
 
-//PATCH "/api/service/:id/aceppted"=> actualiza los datos del servicio identificado con ese ID cuando es aceptado 
+//PATCH "/api/service/:id/accepted" => actualiza los datos del servicio identificado con ese ID cuando es aceptado 
 
-router.patch("/:serviceId/aceppted", isAuthenticated, async(req,res,next)=>{
+router.patch("/:serviceId/accepted", isAuthenticated, async(req,res,next)=>{
 
     const{acceptedServices} =req.body
     const serviceToUpdate = {

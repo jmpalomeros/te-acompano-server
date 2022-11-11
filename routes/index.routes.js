@@ -10,4 +10,7 @@ router.use("/auth", authRoutes )
 const serviceRoutes = require("./service.routes")
 router.use("/service", serviceRoutes )
 
+const reviewRoutes = require("./review.routes")
+router.use("/review", reviewRoutes )
+
 module.exports = router;
