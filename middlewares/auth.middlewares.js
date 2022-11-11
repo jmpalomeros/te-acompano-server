@@ -5,7 +5,9 @@ const isAuthenticated = jwt({
   algorithms: ["HS256"],
   requestProperty: "payload",
   getToken: (req) => {
+    
     if (req.headers === undefined || req.headers.authorization === undefined) {
+      console.log("NO HAY TOKEN");
       return null;
     }
 
@@ -15,12 +17,13 @@ const isAuthenticated = jwt({
     const token = tokenArr[1];
 
     if (tokenType !== "Bearer") {
+      console.log("TIPO DE TOKEN INCORRECTO")
       return null;
     }
 
     // ya hemos recibido el token
     // para validarlo se devuelve a la función
-
+    console.log("EL TOKEN HA SIDO ENTREGADO")
     return token;
   },
 });

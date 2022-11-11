@@ -1,14 +1,17 @@
 const router = require("express").Router();
 const Service = require("../models/Service.model");
+const User = require("../models/User.model")
 const isAuthenticated = require("../middlewares/auth.middlewares");
 
 //GET "/api/service"=> envia todos los servicios registrados en la DB
 
-router.get("/", async (req, res, next) => {
+router.get("/",isAuthenticated, async (req, res, next) => {
   try {
     const response = await Service.find()
-    //.populate("offeredServices") //la ruta funciona sin el populate pq el servicio ya trae el id del usuario q lo crea
-    //.populate("acceptedServices") //deberíamos quitarlo pq el listado muestra servicios disponibles, q no esten aceptados
+    .populate("offeredServices")
+    .populate("acceptedServices") 
+    console.log("servicios creados en bd")
+       
     res.status(200).json(response);
   } catch (error) {
     next(error);
@@ -17,7 +20,7 @@ router.get("/", async (req, res, next) => {
 
 //POST "/api/service"=>recibe los detalles del nuevo servicio y lo creo en la DB
 
-router.post("/", async (req, res, next) => {
+router.post("/", isAuthenticated,async (req, res, next) => {
   console.log(req.body);
 
   const {
@@ -25,9 +28,7 @@ router.post("/", async (req, res, next) => {
     typeService,
     description,
     city,
-    isAceppted,
-    offeredServices,
-    acceptedServices
+    offeredServices
     } = req.body;
 
   const newService = {
@@ -35,17 +36,13 @@ router.post("/", async (req, res, next) => {
     typeService,
     description,
     city,
-    isAceppted,
-    offeredServices,
-    acceptedServices //no crea en db esta propiedad
-    
+    offeredServices: req.payload._id,
+       
   };
 
   try {
-    const response = await Service.create(newService, offeredServices.id)
-   
-    // .populate("offeredServices")
-    // .populate("acceptedServices")
+    const response = await Service.create(newService)
+       
     console.log(response)
     
     res.status(201).json("El servicio se ha creado correctamente");
@@ -56,13 +53,14 @@ router.post("/", async (req, res, next) => {
 
 //GET "/api/service/:id" => envía los detalles del servicio identificado con ese ID
 
-router.get("/:serviceId", async(req,res,next)=>{
+router.get("/:serviceId", isAuthenticated,async(req,res,next)=>{
 
     try{
         
         const response = await Service.findById(req.params.serviceId)
+        .populate("offeredServices")
         res.status(200).json(response)
-        //LA RESPUESTA INDICA EL ID DEL USUARIO QUE LO HA CREADO, DESPUÉS TENDREMOS QUE RENDERIZAR LOS DATOS QUE QUERAMOS MOSTRAR
+        
 
     }catch(error){
         next(error)
@@ -72,18 +70,16 @@ router.get("/:serviceId", async(req,res,next)=>{
 
 //PATCH "/api/service/:id"=> actualiza los datos del servicio identificado con ese ID cuando es edita por el oferente 
 
-router.patch("/:serviceId", async(req,res,next)=>{
+router.patch("/:serviceId", isAuthenticated,async(req,res,next)=>{
 
-    const{title,typeService,description,city,isAceppted,offeredServices} =req.body
+    const{title,typeService,description,city} =req.body
     const serviceToUpdate = {
         title,
         typeService,
         description,
         city,
-        isAceppted,
-        offeredServices,
         
-    }
+        }
     
     try{
 
@@ -97,23 +93,20 @@ router.patch("/:serviceId", async(req,res,next)=>{
 
 //PATCH "/api/service/:id/aceppted"=> actualiza los datos del servicio identificado con ese ID cuando es aceptado 
 
-router.patch("/:serviceId/aceppted", async(req,res,next)=>{
+router.patch("/:serviceId/aceppted", isAuthenticated, async(req,res,next)=>{
 
-    const{title,typeService,description,city,isAceppted,offeredServices, acepptedServices} =req.body
+    const{acceptedServices} =req.body
     const serviceToUpdate = {
-        title,
-        typeService,
-        description,
-        city,
-        isAceppted,
-        offeredServices,
-        acepptedServices,    
+        
+      acceptedServices: req.payload._id,    
     }
     
     try{
 
-        await Service.findByIdAndUpdate(req.params.serviceId , acepptedServices.id)
-        console.log(serviceToUpdate) //el servicio figura aceptado pero no se actualiza en la db
+             
+        await Service.findByIdAndUpdate(req.params.serviceId , serviceToUpdate)
+        .populate("acceptedServices")
+        console.log(serviceToUpdate) 
         res.status(200).json("El servicio ha sido aceptado.")
 
     }catch(error){

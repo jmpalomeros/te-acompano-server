@@ -12,7 +12,6 @@ const serviceSchema = new Schema( {
     },
     description: String,
     city: String,
-    isAceppted: Boolean,
     offeredServices:{ 
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
