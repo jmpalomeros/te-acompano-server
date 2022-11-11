@@ -13,4 +13,7 @@ router.use("/service", serviceRoutes )
 const reviewRoutes = require("./review.routes")
 router.use("/review", reviewRoutes )
 
+const userRoutes = require("./user.routes")
+router.use("/user", userRoutes )
+
 module.exports = router;
