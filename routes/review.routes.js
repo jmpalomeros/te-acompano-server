@@ -21,35 +21,7 @@ router.get("/", isAuthenticated, async (req, res, next) => {
   }
 });
 
-// POST "/api/review/:serviceId" => recibe detalles de la review y la crea en la BD (CREATE)
-router.post("/:serviceId", isAuthenticated, async (req, res, next) => {
-  console.log("BODY",req.body);
-console.log(req.params)
-  const { review, rating } =
-    req.body;
 
-  const { serviceId } = req.params;
-
-  try {
-    const serviceObj = await Service.findById(serviceId)
-    //.select("offeredServices");
-    // el .select trae el obj pero solo con las propiedades identificadas
-
-    const newReview = {
-      reviewAuthor: req.payload._id,
-      reviewedService: serviceId,
-      ratedVolunteer: serviceObj.offeredServices,
-      review,
-      rating,
-    };
-    
-    await Review.create(newReview);
-    
-    res.status(200).json("La review se ha creado correctamente");
-  } catch (error) {
-    next(error);
-  }
-});
 
 // GET "/api/review/:reviewId" => envía los detalles de una review identificada con esa ID
 router.get("/:reviewId", isAuthenticated, async (req, res, next) => {
@@ -109,7 +81,35 @@ router.delete("/:reviewId/delete", isAuthenticated, async (req, res, next) => {
 })
 
 
+// POST "/api/review/:serviceId" => recibe detalles de la review y la crea en la BD (CREATE)
+router.post("/:serviceId", isAuthenticated, async (req, res, next) => {
+  console.log("BODY",req.body);
+console.log(req.params)
+  const { review, rating } =
+    req.body;
 
+  const { serviceId } = req.params;
+
+  try {
+    const serviceObj = await Service.findById(serviceId)
+    //.select("offeredServices");
+    // el .select trae el obj pero solo con las propiedades identificadas
+
+    const newReview = {
+      reviewAuthor: req.payload._id,
+      reviewedService: serviceId,
+      ratedVolunteer: serviceObj.offeredServices,
+      review,
+      rating,
+    };
+    
+    await Review.create(newReview);
+    
+    res.status(200).json("La review se ha creado correctamente");
+  } catch (error) {
+    next(error);
+  }
+});
 
 
 module.exports = router;
