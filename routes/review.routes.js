@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const isAuthenticated = require("../middlewares/auth.middlewares");
 const Review = require("../models/Review.model");
-const Service = require("../models/Review.model");
+const Service = require("../models/Service.model");
 
 
 // GET "/api/review" => enviar todas las review (READ)
@@ -24,26 +24,27 @@ router.get("/", isAuthenticated, async (req, res, next) => {
 // POST "/api/review/:serviceId" => recibe detalles de la review y la crea en la BD (CREATE)
 router.post("/:serviceId", isAuthenticated, async (req, res, next) => {
   console.log("BODY",req.body);
-
-  const { reviewAuthor, reviewedService, ratedVolunteer, review, rating } =
+console.log(req.params)
+  const { review, rating } =
     req.body;
 
   const { serviceId } = req.params;
 
   try {
-    const volunteerId = await Service.findById(serviceId)
+    const serviceObj = await Service.findById(serviceId)
     //.select("offeredServices");
+    // el .select trae el obj pero solo con las propiedades identificadas
 
     const newReview = {
       reviewAuthor: req.payload._id,
       reviewedService: serviceId,
-      ratedVolunteer: volunteerId, //!NOS DEVUELVE NULL PQ NO LLEGA EL ID
+      ratedVolunteer: serviceObj.offeredServices, //!NOS DEVUELVE NULL PQ NO LLEGA EL ID
       review,
       rating,
     };
-    console.log("VOLUNTEER",volunteerId)
-    const response = await Review.create(newReview);
-    console.log(response);
+    
+    await Review.create(newReview);
+    
     res.status(200).json("La review se ha creado correctamente");
   } catch (error) {
     next(error);

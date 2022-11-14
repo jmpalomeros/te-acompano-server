@@ -2,21 +2,21 @@ const { Schema, model, default: mongoose } = require("mongoose");
 
 const reviewSchema = new Schema( {
 
-    reviewAuthor: [
+    reviewAuthor: 
         { type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         }, 
-    ],
-    reviewedService: [
+    
+    reviewedService: 
         { type: mongoose.Schema.Types.ObjectId,
         ref: "Service",
         }, 
-    ],
-    ratedVolunteer: [
+    
+    ratedVolunteer: 
     { type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         }, 
-    ],
+    
     review: {
         type: String,
         required: true
