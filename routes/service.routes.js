@@ -7,8 +7,6 @@ const isAuthenticated = require("../middlewares/auth.middlewares");
 router.get("/",isAuthenticated, async (req, res, next) => {
   try {
     const response = await Service.find()
-    .populate("offeredServices")
-    .populate("acceptedServices") 
     console.log("servicios creados en bd")
        
     res.status(200).json(response);

@@ -38,7 +38,7 @@ console.log(req.params)
     const newReview = {
       reviewAuthor: req.payload._id,
       reviewedService: serviceId,
-      ratedVolunteer: serviceObj.offeredServices, //!NOS DEVUELVE NULL PQ NO LLEGA EL ID
+      ratedVolunteer: serviceObj.offeredServices,
       review,
       rating,
     };
