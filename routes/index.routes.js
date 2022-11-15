@@ -16,4 +16,7 @@ router.use("/review", reviewRoutes )
 const userRoutes = require("./user.routes")
 router.use("/user", userRoutes )
 
+const uploadRoutes = require("./upload.routes")
+router.use("/upload", uploadRoutes )
+
 module.exports = router;
