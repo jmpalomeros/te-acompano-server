@@ -6,9 +6,9 @@ const serviceSchema = new Schema( {
     title: String,
     typeService: {
         type: String,
-        enum: ["Ocio", "Ayuda"],
-        default: "Ayuda",
+        enum: ["Ocio", "Ayuda", "Otros"],
         required: true,
+        trim: true
     },
     description: String,
     city: String,
