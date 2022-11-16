@@ -56,6 +56,7 @@ router.get("/:serviceId", isAuthenticated,async(req,res,next)=>{
         
         const response = await Service.findById(req.params.serviceId)
         .populate("offeredServices")
+        .populate("acceptedServices")
         res.status(200).json(response)
         
 
