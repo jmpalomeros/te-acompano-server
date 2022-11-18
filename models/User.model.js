@@ -2,43 +2,42 @@ const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema(
   {
-      role: { 
-        type: String,
+    role: {
+      type: String,
       enum: ["admin", "user", "volunteer"],
       default: "user",
-      }, 
-      firstName: {
-        type: String,
-        required: false,
-        trim: true,
-        lowercase: true
-      },
-      lastName:{
-        type: String,
-        required: false,
-        trim: true,
-        lowercase: true
-      } ,
-      email: {
-        type: String,
+    },
+    firstName: {
+      type: String,
+      required: false,
+      trim: true,
+      lowercase: true,
+    },
+    lastName: {
+      type: String,
+      required: false,
+      trim: true,
+      lowercase: true,
+    },
+    email: {
+      type: String,
       required: true,
       unique: true,
       lowercase: true,
-      trim: true
-      },
-      password:{
-        type: String,
-        required: true
-      },
-      avatar: {
-        type: String,
-      },
-      age: Number,
-      city: String
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    avatar: {
+      type: String,
+    },
+    age: Number,
+    city: String,
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`    
-    timestamps: true
+    timestamps: true,
   }
 );
 
