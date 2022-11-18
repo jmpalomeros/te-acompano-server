@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const uploader = require("../middlewares/cloudinary.middlewares");
-//comentario para subir foto
+//otro comentario
 router.post("/", uploader.single("avatar"), (req, res, next) => {
   if (req.file === undefined) {
     res.status(401).json("problemas subiendo la imagen");
